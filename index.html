@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pattern Problems Using Loops in C</title>
+
+<!-- Prism.js for syntax highlighting -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff;
+    color: #000;
+    overflow: hidden;
+}
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    padding: 60px;
+    box-sizing: border-box;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    z-index: 1;
+}
+
+.slide.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+.slide.prev-slide {
+    transform: translateX(-100%);
+}
+
+h1, h2 {
+    color: #003366;
+}
+
+p, li {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+ul {
+    margin-left: 40px;
+}
+
+pre {
+    background-color: #f4f4f4;
+    padding: 15px;
+    font-size: 18px;
+    border-left: 5px solid #003366;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.pattern {
+    background-color: #f8f8ff;
+    padding: 20px;
+    border: 2px dashed #003366;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 24px;
+    line-height: 1.8;
+}
+
+.pattern span {
+    color: #0033aa;
+    font-weight: bold;
+}
+
+.nav-buttons {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-btn {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: #005599;
+}
+
+.nav-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.slide-number {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    font-size: 18px;
+    color: #003366;
+    font-weight: bold;
+}
+
+.footer {
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+    font-size: 14px;
+    color: #555;
+}
+
+.center {
+    text-align: center;
+}
+
+.fullscreen-hint {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 51, 102, 0.8);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    opacity: 0.8;
+    z-index: 99;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide active center">
+    <h1>Pattern Problems Using Loops in C</h1>
+    <p><b>Subject:</b> Programming for Problem Solving (PPS)</p>
+    <p><b>Course:</b> BE – 1st Semester (CE / CSE)</p>
+    <p><b>Students:</b> Priyanshi Bhatt, Shivanshi Jesadiya</p>
+    <p><b>Faculty:</b> Harsh Sir, Naeim Sir</p>
+    <div class="footer">Department of Computer Engineering</div>
+</div>
+
+<!-- Slide 2: Introduction -->
+<div class="slide">
+    <h2>Introduction</h2>
+    <p>In C programming, pattern problems involve printing a specific arrangement of characters, numbers, or symbols.</p>
+    <p>These patterns are generated using <b>loops</b>, especially <b>nested loops</b>, to control rows and columns.</p>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">2</div>
+</div>
+
+<!-- Slide 3: What is a Loop? -->
+<div class="slide">
+    <h2>What is a Loop?</h2>
+    <p>A loop is a control structure that allows a set of instructions to be executed repeatedly until a given condition is satisfied.</p>
+    <p><b>Benefits (from GeeksforGeeks):</b></p>
+    <ul>
+        <li>Reduces code repetition (DRY principle)</li>
+        <li>Improves program efficiency</li>
+        <li>Essential for handling repetitive tasks like pattern printing</li>
+    </ul>
+    <p><b>Warning:</b> Always ensure the loop condition will eventually become false to avoid <b>infinite loops</b>!</p>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">3</div>
+</div>
+
+<!-- Slide 4: Types of Loops -->
+<div class="slide">
+    <h2>Types of Loops in C (GeeksforGeeks)</h2>
+    <ul>
+        <li><b>for loop</b> → Entry-controlled. Best when number of iterations is known.</li>
+        <li><b>while loop</b> → Entry-controlled. Condition checked before execution.</li>
+        <li><b>do-while loop</b> → Exit-controlled. Executes at least once.</li>
+    </ul>
+    <p><b>Key Difference:</b> while/for check before; do-while checks after.</p>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">4</div>
+</div>
+
+<!-- Slide 5: Nested Loops -->
+<div class="slide">
+    <h2>Why Nested Loops for Patterns?</h2>
+    <ul>
+        <li>Outer loop → rows</li>
+        <li>Inner loop → columns (stars, spaces, numbers)</li>
+        <li>Helps create 2D designs</li>
+    </ul>
+    <p><b>Common Uses:</b> Patterns, matrices, searching</p>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">5</div>
+</div>
+
+<!-- Slide 6: Loop Optimization -->
+<div class="slide">
+    <h2>Loop Optimization Techniques in C</h2>
+    <ul>
+        <li><b>Loop Unrolling</b>: Repeat body manually</li>
+        <li><b>Minimize Inner Work</b>: Compute constants outside</li>
+        <li><b>Use ++i</b> over i++</li>
+        <li><b>Compiler Flags</b>: -O2 / -O3</li>
+    </ul>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">6</div>
+</div>
+
+<!-- Slide 7: Right Angle Star -->
+<div class="slide center">
+    <h2>Example 1: Right Angle Star Pattern</h2>
+    <div class="pattern">
+        <div><span>*</span></div>
+        <div><span>* *</span></div>
+        <div><span>* * *</span></div>
+        <div><span>* * * *</span></div>
+        <div><span>* * * * *</span></div>
+    </div>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">7</div>
+</div>
+
+<!-- Slide 8: Logic -->
+<div class="slide">
+    <h2>Logic Explanation</h2>
+    <ul>
+        <li>Outer loop: 1 to n (rows)</li>
+        <li>Inner loop: print i stars</li>
+    </ul>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">8</div>
+</div>
+
+<!-- Slide 9: Code -->
+<div class="slide">
+    <h2>C Program: Right Angle Star</h2>
+    <pre><code class="language-c">for(int i = 1; i <= 5; i++) {
+    for(int j = 1; j <= i; j++) {
+        printf("* ");
+    }
+    printf("\n");
+}</code></pre>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">9</div>
+</div>
+
+<!-- Slide 10: Number Pyramid -->
+<div class="slide center">
+    <h2>Example 2: Number Pyramid Pattern</h2>
+    <div class="pattern">
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>1</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span>222</span></div>
+        <div>&nbsp;&nbsp;&nbsp;<span>33333</span></div>
+        <div>&nbsp;<span>4444444</span></div>
+        <div><span>555555555</span></div>
+    </div>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">10</div>
+</div>
+
+<!-- Slide 11: Logic -->
+<div class="slide">
+    <h2>Logic Used</h2>
+    <ul>
+        <li>Spaces: decreasing</li>
+        <li>Numbers: 2*i - 1 times</li>
+    </ul>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">11</div>
+</div>
+
+<!-- Slide 12: Code -->
+<div class="slide">
+    <h2>C Program: Number Pyramid</h2>
+    <pre><code class="language-c">for(int i = 1; i <= 5; i++) {
+    for(int j = 5; j > i; j--) printf(" ");
+    for(int k = 1; k <= 2*i - 1; k++) printf("%d", i);
+    printf("\n");
+}</code></pre>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">12</div>
+</div>
+
+<!-- Slide 13: Butterfly -->
+<div class="slide center">
+    <h2>Example 3: Butterfly Pattern</h2>
+    <div class="pattern">
+        <div><span>*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>*</span></div>
+        <div><span>**</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>**</span></div>
+        <div><span>***</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>***</span></div>
+        <div><span>****</span>&nbsp;&nbsp;&nbsp;<span>****</span></div>
+        <div><span>**********</span></div>
+        <div><span>****</span>&nbsp;&nbsp;&nbsp;<span>****</span></div>
+        <div><span>***</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>***</span></div>
+        <div><span>**</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>**</span></div>
+        <div><span>*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>*</span></div>
+    </div>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">13</div>
+</div>
+
+<!-- Slide 14: Butterfly Logic -->
+<div class="slide">
+    <h2>Butterfly Pattern Logic</h2>
+    <ul>
+        <li>Upper half: increasing</li>
+        <li>Lower half: decreasing</li>
+        <li>Spaces for symmetry</li>
+    </ul>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">14</div>
+</div>
+
+<!-- Slide 15: Practice Problem -->
+<div class="slide center">
+    <h2>Practice Problem</h2>
+    <p>Write a C program to print:</p>
+    <div class="pattern">
+        <div><span>1</span></div>
+        <div><span>2 *</span></div>
+        <div><span>3 * 3</span></div>
+        <div><span>4 * 4 * 4</span></div>
+        <div><span>5 * 5 * 5 * 5</span></div>
+    </div>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">15</div>
+</div>
+
+<!-- Slide 16: Pascal's Triangle -->
+<div class="slide center">
+    <h2>Example 4: Pascal's Triangle</h2>
+    <div class="pattern">
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>1</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>1 1</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>1 2 1</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>1 3 3 1</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span>1 4 6 4 1</span></div>
+        <div>&nbsp;&nbsp;&nbsp;<span>1 5 10 10 5 1</span></div>
+    </div>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">16</div>
+</div>
+
+<!-- Slide 17: Pascal's Code -->
+<div class="slide">
+    <h2>Pascal's Triangle – Code</h2>
+    <pre><code class="language-c">int n = 6;
+for(int i = 0; i < n; i++) {
+    for(int s = 0; s < n-i; s++) printf("  ");
+    int val = 1;
+    for(int j = 0; j <= i; j++) {
+        printf("%4d", val);
+        val = val * (i - j) / (j + 1);
+    }
+    printf("\n");
+}</code></pre>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">17</div>
+</div>
+
+<!-- Slide 18: Floyd's Triangle -->
+<div class="slide center">
+    <h2>Example 5: Floyd's Triangle</h2>
+    <div class="pattern">
+        <div><span>1</span></div>
+        <div><span>2 3</span></div>
+        <div><span>4 5 6</span></div>
+        <div><span>7 8 9 10</span></div>
+        <div><span>11 12 13 14 15</span></div>
+    </div>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">18</div>
+</div>
+
+<!-- Slide 19: Floyd's Code -->
+<div class="slide">
+    <h2>Floyd's Triangle – Code</h2>
+    <pre><code class="language-c">int n = 5, num = 1;
+for(int i = 1; i <= n; i++) {
+    for(int j = 1; j <= i; j++) {
+        printf("%4d", num++);
+    }
+    printf("\n");
+}</code></pre>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">19</div>
+</div>
+
+<!-- Slide 20: Diamond Pattern -->
+<div class="slide center">
+    <h2>Example 6: Diamond Star Pattern</h2>
+    <div class="pattern">
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>*</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>* * *</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>* * * * *</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span>* * * * * * *</span></div>
+        <div>&nbsp;&nbsp;&nbsp;<span>* * * * * * * * *</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span>* * * * * * *</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>* * * * *</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>* * *</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>*</span></div>
+    </div>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">20</div>
+</div>
+
+<!-- Slide 21: Diamond Code -->
+<div class="slide">
+    <h2>Diamond Pattern – Code</h2>
+    <pre><code class="language-c">int n = 5;
+
+// Upper half
+for(int i = 1; i <= n; i++) {
+    for(int s = 1; s <= n-i; s++) printf(" ");
+    for(int j = 1; j <= 2*i-1; j++) printf("*");
+    printf("\n");
+}
+
+// Lower half
+for(int i = n-1; i >= 1; i--) {
+    for(int s = 1; s <= n-i; s++) printf(" ");
+    for(int j = 1; j <= 2*i-1; j++) printf("*");
+    printf("\n");
+}</code></pre>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">21</div>
+</div>
+
+<!-- Slide 22: Common Mistakes -->
+<div class="slide">
+    <h2>Common Mistakes & Debugging Tips</h2>
+    <ul>
+        <li><b>Off-by-One Error</b></li>
+        <li><b>Forgetting \n</b></li>
+        <li><b>Wrong space logic</b></li>
+        <li><b>Infinite loops</b></li>
+        <li><b>Tips:</b> Dry-run, temporary printf, test small n</li>
+    </ul>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">22</div>
+</div>
+
+<!-- Slide 23: Applications -->
+<div class="slide">
+    <h2>Applications</h2>
+    <ul>
+        <li>Strengthens loop concepts</li>
+        <li>Improves logical thinking</li>
+        <li>Common in exams & interviews</li>
+    </ul>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">23</div>
+</div>
+
+<!-- Slide 24: Conclusion -->
+<div class="slide center">
+    <h1>Conclusion</h1>
+    <p>Pattern problems deeply enhance understanding of loops and problem-solving in C.</p>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">24</div>
+</div>
+
+<!-- Slide 25: References -->
+<div class="slide">
+    <h2>References</h2>
+    <ul>
+        <li>GeeksforGeeks – Loops, Patterns, Pascal's, Floyd's, Diamond</li>
+        <li>Programiz – C Loops</li>
+    </ul>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">25</div>
+</div>
+
+<!-- Slide 26: Thank You -->
+<div class="slide center">
+    <h1>Thank You</h1>
+    <p>Any Questions?</p>
+    <div class="footer">Department of Computer Engineering</div>
+    <div class="slide-number">26</div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-buttons">
+    <button id="prev-btn" class="nav-btn">← Previous</button>
+    <button id="next-btn" class="nav-btn">Next →</button>
+</div>
+
+<div class="fullscreen-hint">Press F for Fullscreen • Click to go Next • ← → keys</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let current = 0;
+const totalSlides = slides.length;
+
+function showSlide(n) {
+    slides[current].classList.remove("active");
+    slides[current].classList.add("prev-slide");
+    
+    setTimeout(() => {
+        slides[current].classList.remove("prev-slide");
+        slides[current].style.display = "none";
+        
+        current = n;
+        slides[current].style.display = "block";
+        slides[current].classList.add("active");
+        
+        document.getElementById("prev-btn").disabled = (current === 0);
+        document.getElementById("next-btn").disabled = (current === totalSlides - 1);
+    }, 250);
+}
+
+function nextSlide() { if (current < totalSlides - 1) showSlide(current + 1); }
+function prevSlide() { if (current > 0) showSlide(current - 1); }
+
+// Force start on slide 1
+slides.forEach((slide, i) => {
+    slide.classList.remove("active");
+    slide.style.display = "none";
+});
+slides[0].classList.add("active");
+slides[0].style.display = "block";
+current = 0;
+
+// Controls
+document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight" || e.key === " ") nextSlide();
+    else if (e.key === "ArrowLeft") prevSlide();
+    else if (e.key.toLowerCase() === "f") document.documentElement.requestFullscreen();
+});
+document.querySelectorAll(".slide").forEach(s => s.addEventListener("click", e => { if (!e.target.closest(".nav-buttons")) nextSlide(); }));
+document.getElementById("prev-btn").addEventListener("click", prevSlide);
+document.getElementById("next-btn").addEventListener("click", nextSlide);
+document.getElementById("prev-btn").disabled = true;
+
+Prism.highlightAll();
+</script>
+
+</body>
+</html>
