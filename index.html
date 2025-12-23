@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pattern Problems Using Loops in C</title>
 
 <!-- Prism.js for syntax highlighting -->
@@ -10,19 +11,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     background-color: #ffffff;
     color: #000;
     overflow: hidden;
+    touch-action: manipulation;
 }
 
+/* Slide backgrounds */
 .slide {
     width: 100vw;
     height: 100vh;
-    padding: 60px;
-    box-sizing: border-box;
+    padding: 4vw;
     display: none;
     position: absolute;
     top: 0;
@@ -31,6 +37,22 @@ body {
     transform: translateX(100%);
     transition: opacity 0.5s ease, transform 0.5s ease;
     z-index: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Title slide background - lighter overlay for better text visibility */
+.slide:nth-child(1) {
+    background-image: linear-gradient(rgba(255,255,255,0.60), rgba(255,255,255,0.60)), 
+                      url('title_screen.jpeg');
+}
+
+/* All other slides - reduced overlay opacity to make background more visible */
+.slide:not(:nth-child(1)) {
+    background-image: linear-gradient(rgba(255,255,255,0.70), rgba(255,255,255,0.70)), 
+                      url('background.jpeg');
 }
 
 .slide.active {
@@ -44,40 +66,57 @@ body {
     transform: translateX(-100%);
 }
 
-h1, h2 {
-    color: #003366;
+/* Text styles with stronger shadows for better readability on background */
+h1 { 
+    font-size: clamp(28px, 6vw, 48px); 
+    color: #003366; 
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+h2 { 
+    font-size: clamp(22px, 5vw, 36px); 
+    color: #003366; 
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 p, li {
-    font-size: 20px;
+    font-size: clamp(14px, 4vw, 20px);
     line-height: 1.6;
-}
-
-ul {
-    margin-left: 40px;
-}
-
-pre {
-    background-color: #f4f4f4;
-    padding: 15px;
-    font-size: 18px;
-    border-left: 5px solid #003366;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    background-color: rgba(255,255,255,0.4);
+    padding: 2px 6px;
     border-radius: 4px;
-    overflow-x: auto;
+    display: inline-block;
 }
 
-code {
-    font-family: 'Courier New', Courier, monospace;
+/* Code and pattern blocks with higher transparency */
+pre {
+    background-color: rgba(244,244,244,0.85);
+    padding: clamp(12px, 3vw, 15px);
+    font-size: clamp(12px, 3.5vw, 18px);
+    border-left: 5px solid #003366;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    max-height: 40vh;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .pattern {
-    background-color: #f8f8ff;
-    padding: 20px;
-    border: 2px dashed #003366;
-    border-radius: 8px;
+    background-color: rgba(248,248,255,0.85);
+    padding: clamp(15px, 4vw, 20px);
+    border: 3px dashed #003366;
+    border-radius: 10px;
     text-align: center;
-    font-size: 24px;
-    line-height: 1.8;
+    font-size: clamp(16px, 5vw, 24px);
+    line-height: 1.6;
+    margin: 1rem auto;
+    max-width: 90vw;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .pattern span {
@@ -85,70 +124,84 @@ code {
     font-weight: bold;
 }
 
+/* Navigation buttons */
 .nav-buttons {
     position: fixed;
-    bottom: 30px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
     display: flex;
-    gap: 20px;
+    gap: 12px;
 }
 
 .nav-btn {
-    background-color: #003366;
+    background-color: rgba(0,51,102,0.92);
     color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: background-color 0.3s;
-}
-
-.nav-btn:hover {
-    background-color: #005599;
+    padding: clamp(10px, 4vw, 12px) clamp(18px, 6vw, 24px);
+    font-size: clamp(14px, 4vw, 18px);
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    min-height: 48px;
+    flex: 1;
+    max-width: 150px;
+    backdrop-filter: blur(10px);
 }
 
 .nav-btn:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+    background-color: rgba(150,150,150,0.7);
+    opacity: 0.6;
+}
+
+/* Footer and slide number with better visibility */
+.slide-number, .footer {
+    background: rgba(255,255,255,0.9);
+    padding: 8px 14px;
+    border-radius: 14px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .slide-number {
     position: absolute;
-    bottom: 20px;
-    right: 40px;
-    font-size: 18px;
+    bottom: 4vh;
+    right: 4vw;
+    font-size: clamp(14px, 3.5vw, 18px);
     color: #003366;
     font-weight: bold;
 }
 
 .footer {
     position: absolute;
-    bottom: 20px;
-    left: 40px;
-    font-size: 14px;
+    bottom: 4vh;
+    left: 4vw;
+    font-size: clamp(10px, 2.5vw, 14px);
     color: #555;
 }
 
-.center {
-    text-align: center;
+.center { text-align: center; }
+
+.fullscreen-hint, .swipe-hint {
+    position: fixed;
+    background: rgba(0,51,102,0.95);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-size: clamp(11px, 3vw, 14px);
+    z-index: 99;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 .fullscreen-hint {
-    position: fixed;
-    bottom: 80px;
+    bottom: 90px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 51, 102, 0.8);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 14px;
-    opacity: 0.8;
-    z-index: 99;
+}
+
+.swipe-hint {
+    top: 20px;
+    right: 20px;
 }
 </style>
 </head>
@@ -336,7 +389,7 @@ code {
 <!-- Slide 15: Practice Problem -->
 <div class="slide center">
     <h2>Practice Problem</h2>
-    <p>Write a C program to print:</p>
+    <p>Write a C program to print the following pattern:</p>
     <div class="pattern">
         <div><span>1</span></div>
         <div><span>2 *</span></div>
@@ -452,11 +505,17 @@ for(int i = n-1; i >= 1; i--) {
 <div class="slide">
     <h2>Common Mistakes & Debugging Tips</h2>
     <ul>
-        <li><b>Off-by-One Error</b></li>
-        <li><b>Forgetting \n</b></li>
-        <li><b>Wrong space logic</b></li>
-        <li><b>Infinite loops</b></li>
-        <li><b>Tips:</b> Dry-run, temporary printf, test small n</li>
+        <li><b>Off-by-One Error</b>: Loop runs one time too many/few</li>
+        <li><b>Forgetting \n</b>: All output appears on one line</li>
+        <li><b>Wrong space calculation</b>: Misaligned patterns</li>
+        <li><b>Infinite loop</b>: Condition never becomes false</li>
+        <li><b>Debugging Tips:</b>
+            <ul>
+                <li>Use temporary printf to see row/col values</li>
+                <li>Dry-run on paper for small n</li>
+                <li>Test with n=1 and n=2 first</li>
+            </ul>
+        </li>
     </ul>
     <div class="footer">Department of Computer Engineering</div>
     <div class="slide-number">22</div>
@@ -464,11 +523,11 @@ for(int i = n-1; i >= 1; i--) {
 
 <!-- Slide 23: Applications -->
 <div class="slide">
-    <h2>Applications</h2>
+    <h2>Applications of Pattern Problems</h2>
     <ul>
-        <li>Strengthens loop concepts</li>
+        <li>Strengthens understanding of loops</li>
         <li>Improves logical thinking</li>
-        <li>Common in exams & interviews</li>
+        <li>Common in exams and technical interviews</li>
     </ul>
     <div class="footer">Department of Computer Engineering</div>
     <div class="slide-number">23</div>
@@ -477,7 +536,7 @@ for(int i = n-1; i >= 1; i--) {
 <!-- Slide 24: Conclusion -->
 <div class="slide center">
     <h1>Conclusion</h1>
-    <p>Pattern problems deeply enhance understanding of loops and problem-solving in C.</p>
+    <p>Pattern problems are an excellent way to master loops and enhance problem-solving skills in C programming.</p>
     <div class="footer">Department of Computer Engineering</div>
     <div class="slide-number">24</div>
 </div>
@@ -486,8 +545,9 @@ for(int i = n-1; i >= 1; i--) {
 <div class="slide">
     <h2>References</h2>
     <ul>
-        <li>GeeksforGeeks – Loops, Patterns, Pascal's, Floyd's, Diamond</li>
-        <li>Programiz – C Loops</li>
+        <li>GeeksforGeeks – C Loops and Pattern Programs</li>
+        <li>GeeksforGeeks – Pascal's Triangle, Floyd's Triangle, Diamond Pattern</li>
+        <li>Programiz – C Programming Tutorials</li>
     </ul>
     <div class="footer">Department of Computer Engineering</div>
     <div class="slide-number">25</div>
@@ -503,56 +563,79 @@ for(int i = n-1; i >= 1; i--) {
 
 <!-- Navigation -->
 <div class="nav-buttons">
-    <button id="prev-btn" class="nav-btn">← Previous</button>
+    <button id="prev-btn" class="nav-btn">← Prev</button>
     <button id="next-btn" class="nav-btn">Next →</button>
 </div>
 
-<div class="fullscreen-hint">Press F for Fullscreen • Click to go Next • ← → keys</div>
+<div class="fullscreen-hint">👆 Tap • ← → Swipe • F=Fullscreen</div>
+<div class="swipe-hint">👈 Swipe to Navigate</div>
 
 <script>
 let slides = document.querySelectorAll(".slide");
 let current = 0;
 const totalSlides = slides.length;
+let startX = 0;
 
 function showSlide(n) {
+    if (n === current) return;
     slides[current].classList.remove("active");
     slides[current].classList.add("prev-slide");
-    
     setTimeout(() => {
         slides[current].classList.remove("prev-slide");
         slides[current].style.display = "none";
-        
-        current = n;
+        current = Math.max(0, Math.min(totalSlides - 1, n));
         slides[current].style.display = "block";
         slides[current].classList.add("active");
-        
-        document.getElementById("prev-btn").disabled = (current === 0);
-        document.getElementById("next-btn").disabled = (current === totalSlides - 1);
+        document.getElementById("prev-btn").disabled = current === 0;
+        document.getElementById("next-btn").disabled = current === totalSlides - 1;
     }, 250);
 }
 
-function nextSlide() { if (current < totalSlides - 1) showSlide(current + 1); }
-function prevSlide() { if (current > 0) showSlide(current - 1); }
+function nextSlide() { showSlide(current + 1); }
+function prevSlide() { showSlide(current - 1); }
 
-// Force start on slide 1
+// Initialize
 slides.forEach((slide, i) => {
     slide.classList.remove("active");
     slide.style.display = "none";
 });
 slides[0].classList.add("active");
 slides[0].style.display = "block";
-current = 0;
+document.getElementById("prev-btn").disabled = true;
 
 // Controls
 document.addEventListener("keydown", e => {
     if (e.key === "ArrowRight" || e.key === " ") nextSlide();
     else if (e.key === "ArrowLeft") prevSlide();
-    else if (e.key.toLowerCase() === "f") document.documentElement.requestFullscreen();
+    else if (e.key.toLowerCase() === "f") {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+    }
 });
-document.querySelectorAll(".slide").forEach(s => s.addEventListener("click", e => { if (!e.target.closest(".nav-buttons")) nextSlide(); }));
+
+document.querySelectorAll(".slide").forEach(slide => {
+    slide.addEventListener("click", e => {
+        if (!e.target.closest(".nav-buttons")) {
+            e.clientX > window.innerWidth / 2 ? nextSlide() : prevSlide();
+        }
+    });
+});
+
+// Swipe
+document.addEventListener("touchstart", e => { startX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener("touchend", e => {
+    const diffX = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diffX) > 50) diffX > 0 ? nextSlide() : prevSlide();
+});
+
 document.getElementById("prev-btn").addEventListener("click", prevSlide);
 document.getElementById("next-btn").addEventListener("click", nextSlide);
-document.getElementById("prev-btn").disabled = true;
+
+// Hide hints
+setTimeout(() => {
+    document.querySelector(".fullscreen-hint").style.opacity = "0";
+    document.querySelector(".swipe-hint").style.opacity = "0";
+}, 6000);
 
 Prism.highlightAll();
 </script>
